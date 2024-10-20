@@ -6,6 +6,10 @@ import { mockPlayerFirst, mockPlayerSecond, mockStarship } from '../mock-tests/m
 
 describe('HistoryService', () => {
   let service: HistoryService;
+  const mock1 = new Player(mockPlayerFirst);
+  mock1.assignStarship(mockStarship);
+  const mock2 = new Player(mockPlayerSecond);
+  mock2.assignStarship(mockStarship);
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -33,12 +37,7 @@ describe('HistoryService', () => {
     expect(service.historyBattle[0]).toEqual(mockHistory);
   });
 
-  it('should add new records to the beginning of historyBattle', () => {
-    const mock1 = new Player(mockPlayerFirst);
-    mock1.assignStarship(mockStarship);
-    const mock2 = new Player(mockPlayerSecond);
-    mock2.assignStarship(mockStarship);
-  
+  it('should add new records to the beginning of historyBattle', () => {  
     const mockHistory1: IHistory = {
       winnerName: 'Player 1',
       playerFirst: mock1.getProperties(),
@@ -59,17 +58,11 @@ describe('HistoryService', () => {
   });
 
   it('should trigger downloadHistoryJson and download a JSON file', () => {
-    const mock1 = new Player(mockPlayerFirst);
-    mock1.assignStarship(mockStarship);
-    const mock2 = new Player(mockPlayerSecond);
-    mock2.assignStarship(mockStarship);
-
     const mockHistory: IHistory = {
       winnerName: 'Player 1',
       playerFirst: mock1.getProperties(),
       playerSecond: mock2.getProperties(),
     };
-
     service.addRecord(mockHistory);
 
     const createElementSpy = spyOn(document, 'createElement').and.callFake(() => {
@@ -86,5 +79,16 @@ describe('HistoryService', () => {
 
     expect(createElementSpy).toHaveBeenCalledWith('a');
     expect(revokeObjectURLSpy).toHaveBeenCalled();
+  });
+
+  it('should remove all history when click remove history', () => {
+    const mockHistory: IHistory = {
+      winnerName: 'Player 1',
+      playerFirst: mock1.getProperties(),
+      playerSecond: mock2.getProperties(),
+    };
+    service.addRecord(mockHistory);
+    service.removeHistory();
+    expect(service.historyBattle.length).toBe(0);
   });
 });

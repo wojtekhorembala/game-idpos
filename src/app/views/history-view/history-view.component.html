@@ -2,11 +2,16 @@
     <div class="container-view__content">
         <h1 class="title">Historia walk</h1>
 
-        <app-button 
-          (onClick$)="historyService.downloadHistoryJson()"
-          title="Pobierz"
-          class="get-history"
-        ></app-button>
+        <div class="actions">
+          <app-button 
+            (onClick$)="historyService.downloadHistoryJson()"
+            title="Pobierz"
+          ></app-button>
+          <app-button 
+            (onClick$)="historyService.removeHistory()"
+            title="Usuń historie"
+          ></app-button>
+        </div>
 
         <table>
             <tr>

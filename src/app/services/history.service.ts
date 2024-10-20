@@ -33,4 +33,8 @@ export class HistoryService {
     alert('Brak historii');
   }
 
+  public removeHistory(): void {
+    this.historyBattle = [];
+  }
+
 }
