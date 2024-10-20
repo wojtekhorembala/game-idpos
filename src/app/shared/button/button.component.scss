@@ -1,0 +1,171 @@
+@use 'var.scss';
+
+$box-shadow-color: #195480;
+$corner-shadow-color: #2781c3;
+$button-width: 11em;
+$button-height: 4em;
+
+@keyframes changeColor8 {
+  from {
+    background-color: $corner-shadow-color;
+  }
+  to {
+    background-color: var.$secondary-color;
+  }
+}
+
+@keyframes lightEffect8 {
+  from {
+    box-shadow: 1px 1px 5px var.$secondary-color;
+  }
+  to {
+    box-shadow: 0 0 2px var.$secondary-color;
+  }
+}
+
+@keyframes greenLight8 {
+  to {
+    box-shadow: inset 0px 0px 32px var.$secondary-color;
+  }
+}
+
+@keyframes leftArrow8 {
+  from {
+    transform: translate(0px);
+  }
+  to {
+    transform: translateX(10px);
+  }
+}
+
+@keyframes rightArrow8 {
+  from {
+    transform: translate(0px);
+  }
+  to {
+    transform: translateX(-10px);
+  }
+}
+
+button {
+    position: relative;
+    min-width: $button-width;
+    min-height: $button-height;
+    outline: none;
+    transition: 0.1s;
+    background-color: transparent;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+    color: var.$text-color;
+    cursor: pointer;
+
+    .title {
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      max-width: 120px;
+      position: absolute;
+      top: 50%;
+      left: 65%;
+      transform: translate(-50%, -50%);
+    }
+
+    .clip {
+        --color: $primary-color;
+        position: absolute;
+        top: 0;
+        overflow: hidden;
+        width: 120%;
+        height: 100%;
+        border: 5px double var(--color);
+        box-shadow: inset 0px 0px 15px $box-shadow-color;
+        clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+
+        .corner {
+            position: absolute;
+            width: 4em;
+            height: 4em;
+            background-color: var.$primary-color;
+            box-shadow: inset 1px 1px 8px $corner-shadow-color;
+            transform: scale(1) rotate(45deg);
+            transition: 0.2s;
+        
+            &.right-top {
+                top: -1.98em;
+                left: 91%;
+            }
+            &.left-top {
+                top: -1.96em;
+                left: -3.0em;
+            }
+            &.left-bottom {
+                top: 2.10em;
+                left: -2.15em;
+            }
+            &.right-bottom {
+                top: 45%;
+                left: 88%;
+            }
+        }
+    }
+    .arrow {
+        position: absolute;
+        transition: 0.2s;
+        background-color: var.$primary-color;
+        top: 35%;
+        width: 11%;
+        height: 30%;
+
+        &.left-arrow {
+            left: -13.5%;
+            clip-path: polygon(100% 0, 100% 100%, 0 50%);
+        }
+        &.right-arrow {
+            clip-path: polygon(100% 49%, 0 0, 0 100%);
+            left: 131%;
+        }
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+    &:hover {
+        .arrow {
+            &.right-arrow {
+                background-color: var.$secondary-color;
+                left: -15%;
+                animation: 0.6s ease-in-out both infinite alternate rightArrow8;
+            }
+            &.left-arrow {
+                background-color: var.$secondary-color;
+                left: 130%;
+                animation: 0.6s ease-in-out both infinite alternate leftArrow8;
+            }
+        }
+        .clip {
+            animation: 0.2s ease-in-out 0.55s both greenLight8;
+            --color: var.$secondary-color;
+
+            .corner {
+                transform: scale(1.25) rotate(45deg);
+
+                &.left-top {
+                    animation: 0.1s ease-in-out 0.05s both changeColor8,
+                    0.2s linear 0.4s both lightEffect8;
+                }
+                &.right-top {
+                    animation: 0.1s ease-in-out 0.15s both changeColor8,
+                    0.2s linear 0.4s both lightEffect8;
+                }
+                &.right-bottom {
+                    animation: 0.1s ease-in-out 0.25s both changeColor8,
+                    0.2s linear 0.4s both lightEffect8;
+                }
+                &.left-bottom {
+                    animation: 0.1s ease-in-out 0.35s both changeColor8,
+                    0.2s linear 0.4s both lightEffect8;
+                }
+            }
+        }
+    }
+}

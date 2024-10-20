@@ -1,0 +1,41 @@
+<div class="container-view">
+    <div class="container-view__content">
+        <app-player-card [player]="playersBattleService.playerFirst"></app-player-card>
+
+        <ng-container *ngIf="winnerName; else noWinner">
+            <span *ngIf="winnerName" class="winner-name">
+                Zwycięzca: {{winnerName}}
+            </span>
+            <app-button
+                (onClick$)="back()"
+                title="Nowa gra"
+            ></app-button>
+        </ng-container>
+
+        <ng-template #noWinner>
+            <app-button 
+                (onClick$)="onStartBattle()"
+                title="Walka"
+            ></app-button>
+        </ng-template>
+
+        <app-player-card [player]="playersBattleService.playerSecond" [isSecondPlayer]="true"></app-player-card>
+    </div>
+</div>
+
+<app-explosion
+    *ngIf="isVisibleExplosion"
+    (onCompleteAnimation$)="onCompleteAnimationBattle()"
+></app-explosion>
+
+<!-- 
+<div>
+    <button (click)="generatePlayerAttributes()">Wyznacz atrybuty graczy</button>
+    <button (click)="generateStarships()">Wyznacz atrybuty statków</button>
+    <button (click)="determineWinner()">Wyznacz zwycięzcę</button>
+    <button (click)="clearHistory()">Wyczyść historię</button>
+    <button (click)="downloadHistory()">Pobierz historię</button>
+  
+    <p *ngIf="winner">{{ winner }}</p>
+    <p *ngIf="error">{{ error }}</p>
+  </div> -->

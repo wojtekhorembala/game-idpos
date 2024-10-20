@@ -1,0 +1,30 @@
+@use 'var.scss';
+@use 'mixins.scss';
+
+.container-view {
+    &__content {
+        .title {
+            color: var.$text-color;
+            font-size: 2rem;
+            font-weight: bold;
+            font-family: arial, sans-serif;
+        }
+        .get-history {
+            margin-top: 2rem;
+        }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 2rem;
+            max-width: 800px;
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+                background-color: #FFF;
+            }
+        }
+    }
+}

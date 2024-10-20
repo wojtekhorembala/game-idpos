@@ -1,0 +1,37 @@
+@use 'var.scss';
+@use 'mixins.scss';
+
+@keyframes flipIn {
+    0% {
+        transform: rotateY(-180deg);
+        opacity: 0;
+    }
+    100% {
+        transform: rotateY(0deg);
+        opacity: 1;
+    }
+}
+
+.player-card {
+    @include mixins.flexCenter();
+    width: 300px;
+    height: 200px;
+    border-radius: 10px;
+    background: linear-gradient(109.6deg, rgb(6, 2, 2) 32.4%, rgb(137, 30, 47) 98.8%);
+    position: relative;
+    transform-style: preserve-3d;
+    animation: flipIn 0.6s ease-in-out forwards;
+    box-sizing: border-box;
+
+    &.second-player {
+        background: linear-gradient(178.1deg, rgb(60, 55, 106) 8.5%, rgb(23, 20, 69) 82.4%);
+    }
+    &__name {
+        color: var.$text-color;
+        font-family: monospace;
+        font-size: 1rem;
+        font-weight: bold;
+        letter-spacing: 10px;
+        text-align: center;
+    }
+}

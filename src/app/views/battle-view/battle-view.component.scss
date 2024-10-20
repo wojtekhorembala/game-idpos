@@ -1,0 +1,15 @@
+@use 'var.scss';
+
+.container-view {
+    &__content {
+        gap: 1.8rem;
+
+        .winner-name {
+            color: var.$text-color;
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 10px;
+        }
+    }
+}

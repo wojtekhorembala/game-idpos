@@ -1,0 +1,30 @@
+<div class="container-view">
+    <div class="container-view__content">
+        <ng-container *ngIf="!isVisibleLoader" [ngSwitch]="gameStep">
+
+            <ng-container *ngSwitchCase="GAME_STEP.Play">
+                    <app-button 
+                        (onClick$)="onClickPlay()"
+                        title="Play"
+                    ></app-button>
+                    <app-button
+                        routerLink="/history"
+                        title="Historia"
+                    ></app-button>
+            </ng-container>
+
+            <app-button
+                *ngSwitchCase="GAME_STEP.SetPlayersAttributes"
+                (onClick$)="onClickSelectPlayerAttr()"
+                title="Wyznacz atrybuty graczy"
+            ></app-button>
+            <app-button 
+                *ngSwitchCase="GAME_STEP.SetStarShipsAttributes"
+                (onClick$)="onClickSelectStarShipsAttr()"
+                title="Wyznacz statki"
+            ></app-button>
+        </ng-container>
+
+        <app-loader *ngIf="isVisibleLoader"></app-loader>
+    </div>
+</div>

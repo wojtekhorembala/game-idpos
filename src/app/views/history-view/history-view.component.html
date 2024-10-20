@@ -1,0 +1,24 @@
+<div class="container-view">
+    <div class="container-view__content">
+        <h1 class="title">Historia walk</h1>
+
+        <app-button 
+          (onClick$)="historyService.downloadHistoryJson()"
+          title="Pobierz"
+          class="get-history"
+        ></app-button>
+
+        <table>
+            <tr>
+              <th>Zwycięzca</th>
+              <th>Gracz 1</th>
+              <th>Gracz 2</th>
+            </tr>
+            <tr *ngFor="let item of historyService.historyBattle">
+              <td>{{item.winnerName}}</td>
+              <td>{{item.playerFirst.name}}</td>
+              <td>{{item.playerSecond.name}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
