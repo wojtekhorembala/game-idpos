@@ -14,3 +14,4 @@ import { ButtonComponent } from '../../shared/button/button.component';
 export class HistoryViewComponent {
   constructor(public historyService: HistoryService) {}
 }
+  
