@@ -19,14 +19,18 @@ export class HistoryService {
   }
 
   public downloadHistoryJson(): void {
-    const dataStr = JSON.stringify(this.historyBattle, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = 'battle-history.json';
-    anchor.click();
-    window.URL.revokeObjectURL(url);
+    if (this.historyBattle?.length) {
+      const dataStr = JSON.stringify(this.historyBattle, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = 'battle-history.json';
+      anchor.click();
+      window.URL.revokeObjectURL(url);
+      return;
+    }
+    alert('Brak historii');
   }
 
 }
