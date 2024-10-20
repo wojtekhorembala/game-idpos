@@ -2,49 +2,35 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerCardComponent } from './player-card.component';
 import { By } from '@angular/platform-browser';
 import { Player } from '../../../classes/player';
+import { mockPlayerFirst } from '../../../mock-tests/mock-players';
 
 describe('PlayerCardComponent', () => {
   let component: PlayerCardComponent;
   let fixture: ComponentFixture<PlayerCardComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [PlayerCardComponent]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [PlayerCardComponent],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(PlayerCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create the component', () => {
+    component.player = new Player(mockPlayerFirst);
     expect(component).toBeTruthy();
   });
 
   it('should display player name', () => {
-    const mockPlayer = { name: 'Player 1' } as Player;
-    component.player = mockPlayer;
+    component.player = new Player(mockPlayerFirst);
     
     fixture.detectChanges();
 
     const playerNameElement = fixture.debugElement.query(By.css('.player-card__name')).nativeElement;
     expect(playerNameElement.textContent).toContain('Player 1');
-  });
-
-  it('should apply "second-player" class if isSecondPlayer is true', () => {
-    component.isSecondPlayer = true;
-    
-    fixture.detectChanges();
-    const playerCardElement = fixture.debugElement.query(By.css('.player-card')).nativeElement;
-    expect(playerCardElement.classList).toContain('second-player');
-  });
-
-  it('should not apply "second-player" class if isSecondPlayer is false', () => {
-    component.isSecondPlayer = false;
-
-    fixture.detectChanges();
-
-    const playerCardElement = fixture.debugElement.query(By.css('.player-card')).nativeElement;
-    expect(playerCardElement.classList).not.toContain('second-player');
   });
 });

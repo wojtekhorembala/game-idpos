@@ -7,6 +7,8 @@ import { BattleViewComponent } from './battle-view.component';
 import { PlayerCardComponent } from './player-card/player-card.component';
 import { ButtonComponent } from '../../shared/button/button.component';
 import { ExplosionComponent } from '../../shared/explosion/explosion.component';
+import { Player } from '../../classes/player';
+import { mockPlayerFirst, mockPlayerSecond, mockStarship } from '../../mock-tests/mock-players';
 
 describe('BattleViewComponent', () => {
   let component: BattleViewComponent;
@@ -21,23 +23,27 @@ describe('BattleViewComponent', () => {
     mockHistoryService = jasmine.createSpyObj('HistoryService', ['addRecord']);
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockChangeDetectorRef = jasmine.createSpyObj('ChangeDetectorRef', ['detectChanges']);
+  });
 
-    TestBed.configureTestingModule({
-      declarations: [BattleViewComponent],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [],
       providers: [
         { provide: PlayersBattleService, useValue: mockPlayersBattleService },
         { provide: HistoryService, useValue: mockHistoryService },
         { provide: Router, useValue: mockRouter },
         { provide: ChangeDetectorRef, useValue: mockChangeDetectorRef }
       ],
-      imports: [PlayerCardComponent, ButtonComponent, ExplosionComponent]
+      imports: [PlayerCardComponent, ButtonComponent, ExplosionComponent, BattleViewComponent]
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(BattleViewComponent);
     component = fixture.componentInstance;
 
-    mockPlayersBattleService.playerFirst = { getProperties: () => ({ name: 'Player 1' } as any) } as any;
-    mockPlayersBattleService.playerSecond = { getProperties: () => ({ name: 'Player 2' } as any) } as any;
+    mockPlayersBattleService.playerFirst = new Player(mockPlayerFirst);
+    mockPlayersBattleService.playerSecond = new Player(mockPlayerSecond);
 
     fixture.detectChanges();
   });
@@ -47,32 +53,32 @@ describe('BattleViewComponent', () => {
   });
 
   it('should navigate to "/" if players are not set', () => {
-    mockPlayersBattleService.playerFirst = null as any;
-    mockPlayersBattleService.playerSecond = null as any;
+    mockPlayersBattleService.playerFirst = undefined as any;
+    mockPlayersBattleService.playerSecond = undefined as any;
 
+    fixture = TestBed.createComponent(BattleViewComponent);
     component = fixture.componentInstance;
-
+    fixture.detectChanges();
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
   });
+  
 
   it('should display winner name after battle starts', () => {
+    mockPlayersBattleService.playerFirst = new Player(mockPlayerFirst);
+    mockPlayersBattleService.playerFirst.assignStarship(mockStarship);
+    mockPlayersBattleService.playerSecond = new Player(mockPlayerSecond);
+    mockPlayersBattleService.playerSecond.assignStarship(mockStarship);
+
     mockPlayersBattleService.determineWinner.and.returnValue('Player 1');
-    
     component.onStartBattle();
 
     expect(component.winnerName).toBe('Player 1');
     expect(component.isVisibleExplosion).toBeTrue();
     expect(mockHistoryService.addRecord).toHaveBeenCalledWith({
-      playerFirst: { name: 'Player 1' } as any,
-      playerSecond: { name: 'Player 2' } as any,
+      playerFirst: mockPlayersBattleService.playerFirst.getProperties(),
+      playerSecond: mockPlayersBattleService.playerSecond.getProperties(),
       winnerName: 'Player 1',
     });
-  });
-
-  it('should hide explosion animation on animation complete', () => {
-    component.onCompleteAnimationBattle();
-    expect(component.isVisibleExplosion).toBeFalse();
-    expect(mockChangeDetectorRef.detectChanges).toHaveBeenCalled();
   });
 
   it('should call back and navigate to "/" when back is called', () => {

@@ -11,6 +11,6 @@ import { Player } from '../../../classes/player';
   styleUrl: './player-card.component.scss'
 })
 export class PlayerCardComponent {
-  @Input() public player!: Player;
+  @Input() public player?: Player;
   @Input() public isSecondPlayer: boolean = false;
 }

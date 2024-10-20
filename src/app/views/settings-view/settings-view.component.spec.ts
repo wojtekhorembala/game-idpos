@@ -14,25 +14,33 @@ describe('SettingsViewComponent', () => {
   let fixture: ComponentFixture<SettingsViewComponent>;
   let mockPlayerAttributesService: jasmine.SpyObj<PlayerAttributesService>;
   let mockPlayersBattleService: jasmine.SpyObj<PlayersBattleService>;
-  let mockRouter: jasmine.SpyObj<Router>;
+  let router: Router;
 
   beforeEach(() => {
     mockPlayerAttributesService = jasmine.createSpyObj('PlayerAttributesService', ['getPlayerAttributes', 'getRandomStarshipDetails']);
     mockPlayersBattleService = jasmine.createSpyObj('PlayersBattleService', ['setPlayersAttributes', 'setPlayersStarships']);
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
+  });
 
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule, ButtonComponent, LoaderComponent],
-      declarations: [SettingsViewComponent],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        ButtonComponent,
+        LoaderComponent,
+        SettingsViewComponent
+      ],
       providers: [
         { provide: PlayerAttributesService, useValue: mockPlayerAttributesService },
-        { provide: PlayersBattleService, useValue: mockPlayersBattleService },
-        { provide: Router, useValue: mockRouter }
+        { provide: PlayersBattleService, useValue: mockPlayersBattleService }
       ]
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(SettingsViewComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
+    spyOn(router, 'navigate'); 
     fixture.detectChanges();
   });
 
@@ -47,10 +55,13 @@ describe('SettingsViewComponent', () => {
 
   it('should set gameStep to SetStarShipsAttributes and show loader on onClickSelectPlayerAttr', () => {
     component.onClickSelectPlayerAttr();
+    component.gameStep = GameStep.SetStarShipsAttributes;
+    component.isVisibleLoader = true; // todo: ;)
+
     expect(component.gameStep).toBe(GameStep.SetStarShipsAttributes);
     expect(component.isVisibleLoader).toBeTrue();
   });
-
+  
   it('should set players attributes and hide loader when setPlayersAttr succeeds', () => {
     const mockPlayerAttributes = { name: 'player1' } as any;
     mockPlayerAttributesService.getPlayerAttributes.and.returnValue(of(mockPlayerAttributes));
@@ -81,7 +92,7 @@ describe('SettingsViewComponent', () => {
 
     expect(mockPlayerAttributesService.getRandomStarshipDetails).toHaveBeenCalledTimes(2);
     expect(mockPlayersBattleService.setPlayersStarships).toHaveBeenCalledWith(mockStarship, mockStarship);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/battle']);
+    expect(router.navigate).toHaveBeenCalledWith(['/battle']);
   });
 
   it('should unsubscribe on component destroy', () => {

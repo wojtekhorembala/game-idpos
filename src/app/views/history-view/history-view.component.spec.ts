@@ -1,14 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HistoryViewComponent } from './history-view.component';
-import { HistoryService } from '../../services/history.service';
 import { ButtonComponent } from '../../shared/button/button.component';
+import { HistoryService } from '../../services/history.service';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 describe('HistoryViewComponent', () => {
   let component: HistoryViewComponent;
   let fixture: ComponentFixture<HistoryViewComponent>;
   let mockHistoryService: jasmine.SpyObj<HistoryService>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     mockHistoryService = jasmine.createSpyObj('HistoryService', ['downloadHistoryJson'], {
       historyBattle: [
         {
@@ -24,14 +26,15 @@ describe('HistoryViewComponent', () => {
       ]
     });
 
-    TestBed.configureTestingModule({
-      declarations: [HistoryViewComponent],
+    await TestBed.configureTestingModule({
+      imports: [HistoryViewComponent, ButtonComponent],
       providers: [
-        { provide: HistoryService, useValue: mockHistoryService }
+        { provide: HistoryService, useValue: mockHistoryService },
       ],
-      imports: [ButtonComponent]
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(HistoryViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -42,11 +45,9 @@ describe('HistoryViewComponent', () => {
   });
 
   it('should call downloadHistoryJson on button click', () => {
-    const compiled = fixture.nativeElement as HTMLElement;
-    const button = compiled.querySelector('app-button');
-
-    button?.dispatchEvent(new Event('click'));
-
+    const buttonDe: DebugElement = fixture.debugElement.query(By.directive(ButtonComponent));
+    buttonDe.triggerEventHandler('onClick$', null);
     expect(mockHistoryService.downloadHistoryJson).toHaveBeenCalled();
   });
+
 });

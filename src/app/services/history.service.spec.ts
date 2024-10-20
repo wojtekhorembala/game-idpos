@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HistoryService } from './history.service';
 import { IHistory } from '../interfaces/history.interface';
 import { Player } from '../classes/player';
-import { mockPlayerFirst, mockPlayerSecond } from '../mock-tests/mock-players';
+import { mockPlayerFirst, mockPlayerSecond, mockStarship } from '../mock-tests/mock-players';
 
 describe('HistoryService', () => {
   let service: HistoryService;
@@ -17,10 +17,14 @@ describe('HistoryService', () => {
   });
 
   it('should add a record to historyBattle', () => {
+    const mock1 = new Player(mockPlayerFirst);
+    mock1.assignStarship(mockStarship);
+    const mock2 = new Player(mockPlayerSecond);
+    mock2.assignStarship(mockStarship);
     const mockHistory: IHistory = {
       winnerName: 'Player 1',
-      playerFirst: new Player(mockPlayerFirst).getProperties(),
-      playerSecond: new Player(mockPlayerSecond).getProperties(),
+      playerFirst: mock1.getProperties(),
+      playerSecond: mock2.getProperties(),
     };
 
     service.addRecord(mockHistory);
@@ -30,15 +34,20 @@ describe('HistoryService', () => {
   });
 
   it('should add new records to the beginning of historyBattle', () => {
+    const mock1 = new Player(mockPlayerFirst);
+    mock1.assignStarship(mockStarship);
+    const mock2 = new Player(mockPlayerSecond);
+    mock2.assignStarship(mockStarship);
+  
     const mockHistory1: IHistory = {
       winnerName: 'Player 1',
-      playerFirst: new Player(mockPlayerFirst).getProperties(),
-      playerSecond: new Player(mockPlayerSecond).getProperties(),
+      playerFirst: mock1.getProperties(),
+      playerSecond: mock2.getProperties(),
     };
     const mockHistory2: IHistory = {
       winnerName: 'Player 2',
-      playerFirst: new Player(mockPlayerFirst).getProperties(),
-      playerSecond: new Player(mockPlayerSecond).getProperties(),
+      playerFirst: mock1.getProperties(),
+      playerSecond: mock2.getProperties(),
     };
 
     service.addRecord(mockHistory1);
@@ -50,10 +59,15 @@ describe('HistoryService', () => {
   });
 
   it('should trigger downloadHistoryJson and download a JSON file', () => {
+    const mock1 = new Player(mockPlayerFirst);
+    mock1.assignStarship(mockStarship);
+    const mock2 = new Player(mockPlayerSecond);
+    mock2.assignStarship(mockStarship);
+
     const mockHistory: IHistory = {
       winnerName: 'Player 1',
-      playerFirst: new Player(mockPlayerFirst).getProperties(),
-      playerSecond: new Player(mockPlayerSecond).getProperties(),
+      playerFirst: mock1.getProperties(),
+      playerSecond: mock2.getProperties(),
     };
 
     service.addRecord(mockHistory);
